@@ -1,0 +1,29 @@
+{
+	"id": "32418d15-3673-806d-f496-37215f5774c6",
+	"name": "Microservices",
+	"requests": [
+		{
+			"id": "017daf44-ec64-d3ef-52ee-7f9447c2c724",
+			"headers": "Content-Type: application/json\n",
+			"url": "http://localhost:57106/api/pakket",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463152246192,
+			"name": "http://localhost:57106/api/order",
+			"description": "Meld pakket aan bij Pakket Service, met voorbeelddata.",
+			"collectionId": "32418d15-3673-806d-f496-37215f5774c6",
+			"responses": [],
+			"rawModeData": "{\n \"orderId\" : \"OR123456\",\n \"afzender\" : {\n    \"naam\" : \"Voorbeeld Bedrijf\",\n    \"emailadres\" : \"voorbeeld@bedrijf.com\",\n    \"adres\" : {\n        \"straat\" : \"Singel\",\n        \"huisnummer\" : \"1a\",\n        \"postcode\" : \"1234AB\",\n        \"plaats\" : \"Amsterdam\",\n        \"land\" : \"Nederland\"\n    }\n },\n \"ontvanger\" : {\n    \"naam\" : \"Jan Janssen\",\n    \"emailadres\" : \"j.janssen@example.com\",\n    \"adres\" : {\n        \"straat\" : \"Dropsstraat\",\n        \"huisnummer\" : \"139\",\n        \"postcode\" : \"4321AB\",\n        \"plaats\" : \"Maastricht\",\n        \"land\" : \"Nederland\"\n    }\n },\n \"gewicht\" : \"8kg\",\n \"afmetingen\" : \"15x15x30 (lxbxh)\"\n}"
+		}
+	],
+	"order": [
+		"017daf44-ec64-d3ef-52ee-7f9447c2c724"
+	],
+	"timestamp": 1463137425991
+}

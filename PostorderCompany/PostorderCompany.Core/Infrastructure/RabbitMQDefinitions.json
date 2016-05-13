@@ -1,0 +1,62 @@
+{
+  "rabbit_version": "3.5.0",
+  "users": [
+    {
+	  "name": "postordercompany",
+      "password_hash": "2E2SjlweOQFFJn+fvIzeJ0iSxveZ7tl0r1ePmGaRjbgUVtZv",
+	  "hashing_algorithm": "rabbit_password_hashing_sha256",
+	  "tags": ""
+	}
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "postordercompany",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "parameters": [
+  ],
+  "policies": [
+  ],
+  "queues": [
+    {
+      "name": "PostorderCompany.Tracking",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+      }
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "PostorderCompany",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {
+      }
+    },
+  ],
+  "bindings": [
+    {
+      "source": "PostorderCompany",
+      "vhost": "/",
+      "destination": "PostorderCompany.Tracking",
+      "destination_type": "queue",
+      "routing_key": "Pakket.#",
+      "arguments": {
+      }
+    }
+  ]
+}
