@@ -48,7 +48,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\OrderBetaald.cs" />
+    <Compile Include="Events\OrderIngepakt.cs" />
+    <Compile Include="Events\OrderVerzonden.cs" />
+    <Compile Include="Events\OrderOntvangen.cs" />
+    <Compile Include="Events\PakketAfgeleverd.cs" />
+    <Compile Include="Events\PakketOnderweg.cs" />
     <Compile Include="Infrastructure\RabbitMQEventHandler.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderItem.cs" />
     <Compile Include="Models\Pakket.cs" />
     <Compile Include="Events\BaseEvent.cs" />
     <Compile Include="Events\PakketOntvangen.cs" />
