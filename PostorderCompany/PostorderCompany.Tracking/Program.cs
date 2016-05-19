@@ -2,6 +2,7 @@
 using PostorderCompany.Core.Infrastructure;
 using PostorderCompany.Core.Events;
 using Newtonsoft.Json;
+using PostorderCompany.Core.Models;
 
 namespace PostorderCompany.Tracking
 {
@@ -23,33 +24,103 @@ namespace PostorderCompany.Tracking
             bool handled = true;
             switch (eventType)
             {
+                case "OrderOntvangen":
+                    OrderOntvangen orderOntvangen = JsonConvert.DeserializeObject<OrderOntvangen>(eventData);
+                    handled = Handle(orderOntvangen);
+                    break;
+                case "OrderIngepakt":
+                    OrderIngepakt orderIngepakt = JsonConvert.DeserializeObject<OrderIngepakt>(eventData);
+                    handled = Handle(orderIngepakt);
+                    break;
+                case "OrderBetaald":
+                    OrderBetaald orderBetaald = JsonConvert.DeserializeObject<OrderBetaald>(eventData);
+                    handled = Handle(orderBetaald);
+                    break;
+                case "OrderVerzonden":
+                    OrderVerzonden orderVerzonden = JsonConvert.DeserializeObject<OrderVerzonden>(eventData);
+                    handled = Handle(orderVerzonden);
+                    break;
+
                 case "PakketOntvangen":
-                    PakketOntvangen pakketOntvangen = JsonConvert.DeserializeObject<PakketOntvangen>(eventData);
+                    PakketGereed pakketOntvangen = JsonConvert.DeserializeObject<PakketGereed>(eventData);
                     handled = Handle(pakketOntvangen);
                     break;
+                case "PakketOnderweg":
+                    PakketOnderweg pakketOnderweg = JsonConvert.DeserializeObject<PakketOnderweg>(eventData);
+                    handled = Handle(pakketOnderweg);
+                    break;
+                case "PakketAfgeleverd":
+                    PakketAfgeleverd pakketAfgeleverd = JsonConvert.DeserializeObject<PakketAfgeleverd>(eventData);
+                    handled = Handle(pakketAfgeleverd);
+                    break;
             }
-
             return handled;
         }
 
-        private static bool Handle(PakketOntvangen pakketOntvangen)
+        private static bool Handle(OrderOntvangen orderOntvangen)
         {
-            Console.WriteLine("Pakket ontvangen van afzender:\n"
+            Console.WriteLine("Order Ontvangen: {0}\nKlant:\n   {1}\n   {2} {3}\n   {4} {5}\n   {6}\n   {7}", 
+                orderOntvangen.orderId, orderOntvangen.klant.naam, 
+                orderOntvangen.klant.adres.straat, orderOntvangen.klant.adres.huisnummer, 
+                orderOntvangen.klant.adres.postcode, orderOntvangen.klant.adres.plaats,
+                orderOntvangen.klant.adres.land, orderOntvangen.klant.emailadres);
+            Console.WriteLine("Order Items:");
+
+            foreach (OrderItem item in orderOntvangen.items)
+            {
+                Console.WriteLine("   {0}x {1}", item.aantal, item.artikelId);
+            }
+            return true;
+        }
+
+        private static bool Handle(OrderIngepakt orderIngepakt)
+        {
+            Console.WriteLine("Order Ingepakt: {0}\nGewicht: {1}\nAfmetingen: {2}", orderIngepakt.orderId, orderIngepakt.gewicht, orderIngepakt.afmetingen);
+            return true;
+        }
+
+        private static bool Handle(OrderBetaald orderBetaald)
+        {
+            Console.WriteLine("Order Betaald: {0}\nBetaalmethode: {1}", orderBetaald.orderId, orderBetaald.betaalmethode);
+            return true;
+        }
+
+        private static bool Handle(OrderVerzonden orderVerzonden)
+        {
+            Console.WriteLine("Order Verzonden: {0}", orderVerzonden.orderId);
+            return true;
+        }
+
+        private static bool Handle(PakketGereed pakketGereed)
+        {
+            Console.WriteLine("Pakket Gereed\nAfzender:\n"
                                 + "     {0}\n" 
                                 + "     {1} {2}, {3} {4}, {5}\n"
                                 + "     Order-ID: {6}\n"
-                                + "voor ontvanger:\n"
+                                + "Ontvanger:\n"
                                 + "     {7}\n"
                                 + "     {8} {9}, {10} {11}, {12}\n"
-                                + "{13}, {14}\n"
+                                + "Eigenschappen: {13}, {14}\n"
                                 + "Vanaf nu te volgen onder pakket-ID: {15}\n", 
-                pakketOntvangen.afzender.naam,
-                pakketOntvangen.afzender.adres.straat, pakketOntvangen.afzender.adres.huisnummer, pakketOntvangen.afzender.adres.postcode, pakketOntvangen.afzender.adres.plaats, pakketOntvangen.afzender.adres.land,
-                pakketOntvangen.orderId,
-                pakketOntvangen.ontvanger.naam,
-                pakketOntvangen.ontvanger.adres.straat, pakketOntvangen.ontvanger.adres.huisnummer, pakketOntvangen.ontvanger.adres.postcode, pakketOntvangen.ontvanger.adres.plaats, pakketOntvangen.ontvanger.adres.land,
-                pakketOntvangen.gewicht, pakketOntvangen.afmetingen,
-                pakketOntvangen.pakketId);
+                pakketGereed.afzender.naam,
+                pakketGereed.afzender.adres.straat, pakketGereed.afzender.adres.huisnummer, pakketGereed.afzender.adres.postcode, pakketGereed.afzender.adres.plaats, pakketGereed.afzender.adres.land,
+                pakketGereed.orderId,
+                pakketGereed.ontvanger.naam,
+                pakketGereed.ontvanger.adres.straat, pakketGereed.ontvanger.adres.huisnummer, pakketGereed.ontvanger.adres.postcode, pakketGereed.ontvanger.adres.plaats, pakketGereed.ontvanger.adres.land,
+                pakketGereed.gewicht, pakketGereed.afmetingen,
+                pakketGereed.pakketId);
+            return true;
+        }
+
+        private static bool Handle(PakketOnderweg pakketOnderweg)
+        {
+            Console.WriteLine("Pakket Onderweg: {0}\nChauffeur: {1}", pakketOnderweg.pakketId, pakketOnderweg.chauffeur);
+            return true;
+        }
+
+        private static bool Handle(PakketAfgeleverd pakketAfgeleverd)
+        {
+            Console.WriteLine("Pakket Afgeleverd: {0}\nHandtekening: {1}", pakketAfgeleverd.pakketId, pakketAfgeleverd.handtekening);
             return true;
         }
 

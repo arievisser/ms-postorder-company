@@ -59,7 +59,7 @@
     <Compile Include="Models\OrderItem.cs" />
     <Compile Include="Models\Pakket.cs" />
     <Compile Include="Events\BaseEvent.cs" />
-    <Compile Include="Events\PakketOntvangen.cs" />
+    <Compile Include="Events\PakketGereed.cs" />
     <Compile Include="Infrastructure\RabbitMQEventPublisher.cs" />
     <Compile Include="Models\Adres.cs" />
     <Compile Include="Models\Persoonsgegevens.cs" />
@@ -68,6 +68,9 @@
   <ItemGroup>
     <None Include="Infrastructure\RabbitMQDefinitions.json" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Infrastructure\definitions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
