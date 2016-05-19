@@ -1,0 +1,45 @@
+Queues:
+- PostorderCompany.Tracking
+- PostorderCompany.Pakket
+- PostorderCompany.Chauffeur
+- PostorderCompany.Order
+- PostorderCompany.Magazijn
+- PostorderCompany.Factuur
+ 
+Events:
+
+Order:
+- Order.Ontvangen 
+- Order.Ingepakt
+- Order.Betaald
+- Order.Verzonden
+
+Pakket:
+- Pakket.Gereed
+- Pakket.Onderweg
+- Pakket.Afgeleverd
+
+Bindings:
+
+- PostorderCompany.Tracking: 
+Order.# 
+Pakket.#
+
+- PostorderCompany.Pakket: 
+Pakket.# 
+Order.Verzonden
+
+- PostorderCompany.Chauffeur: 
+Pakket.Gereed
+
+- PostorderCompany.Order: 
+Order.Ingepakt 
+Order.Betaald
+
+- PostorderCompany.Magazijn: 
+Order.Ontvangen
+
+- PostorderCompany.Factuur: 
+Order.Ontvangen
+
+
