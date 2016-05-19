@@ -32,7 +32,8 @@ Order.Verzonden
 - PostorderCompany.Chauffeur: 
 Pakket.Gereed
 
-- PostorderCompany.Order: 
+- PostorderCompany.Order:
+Order.Ontvangen 
 Order.Ingepakt 
 Order.Betaald
 

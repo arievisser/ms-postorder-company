@@ -139,6 +139,15 @@
       "vhost": "/",
       "destination": "PostorderCompany.Order",
       "destination_type": "queue",
+      "routing_key": "Order.Ontvangen",
+      "arguments": {
+      }
+    },
+	{
+      "source": "PostorderCompany",
+      "vhost": "/",
+      "destination": "PostorderCompany.Order",
+      "destination_type": "queue",
       "routing_key": "Order.Ingepakt",
       "arguments": {
       }
