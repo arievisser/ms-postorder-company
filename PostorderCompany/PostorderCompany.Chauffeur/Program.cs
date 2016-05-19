@@ -1,18 +1,26 @@
 ﻿using System;
-using PostorderCompany.Core.Infrastructure;
-using PostorderCompany.Core.Events;
+using System.Windows.Forms;
 using Newtonsoft.Json;
+using PostorderCompany.Core.Events;
+using PostorderCompany.Core.Infrastructure;
 
 namespace PostorderCompany.Chauffeur
 {
     internal class Program
     {
+        //private static ChauffeurOverView form;
+
         public static void Main(string[] args)
         {
             var eventHandler = new RabbitMQEventHandler("PostorderCompany.Chauffeur", HandleEvent);
             eventHandler.Start();
 
             Console.WriteLine("*** Tracking Service ***\n");
+
+//            Application.EnableVisualStyles();
+//            form = new ChauffeurOverView();
+//            Application.Run(form);
+
             Console.ReadKey(true);
 
             eventHandler.Stop();
@@ -53,7 +61,7 @@ namespace PostorderCompany.Chauffeur
                 pakketGereed.ontvanger.adres.straat, pakketGereed.ontvanger.adres.huisnummer, pakketGereed.ontvanger.adres.postcode, pakketGereed.ontvanger.adres.plaats, pakketGereed.ontvanger.adres.land,
                 pakketGereed.gewicht, pakketGereed.afmetingen,
                 pakketGereed.pakketId);
-            
+
             var orderOnderweg = new PakketOnderweg()
             {
                 routingKey = "Order.Onderweg",
