@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PostorderCompany.Core.Events;
 using PostorderCompany.Core.Infrastructure;
+using PostorderCompany.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,24 @@ namespace PostorderCompany.Order
 {
     class Program
     {
+        class OrderStatus
+        {
+            public string id;
+            public Persoonsgegevens klant;
+            public bool betaald;
+            public bool ingepakt;
+            public string gewicht;
+            public string afmetingen;
+        }
+
+        static List<OrderStatus> orders;
+
         static void Main(string[] args)
         {
             var eventHandler = new RabbitMQEventHandler("PostorderCompany.Order", HandleEvent);
             eventHandler.Start();
+
+            orders = new List<OrderStatus>();
 
             Console.WriteLine("*** Order Service ***\n");
             Console.ReadKey(true);
@@ -46,20 +61,77 @@ namespace PostorderCompany.Order
 
         private static bool Handle(OrderOntvangen orderOntvangen)
         {
-            Console.WriteLine("Order Ontvangen, ID: " + orderOntvangen.orderId);
+            orders.Add(new OrderStatus()
+            {
+                id = orderOntvangen.orderId,
+                klant = orderOntvangen.klant,
+                betaald = false,
+                ingepakt = false
+            });
+
             return true;
         }
 
         private static bool Handle(OrderIngepakt orderIngepakt)
         {
-            Console.WriteLine("Order Ingepakt, ID: " + orderIngepakt.orderId);
+            foreach (OrderStatus order in orders)
+            {
+                if (order.id.Equals(orderIngepakt.orderId))
+                {
+                    order.ingepakt = true;
+                    order.gewicht = orderIngepakt.gewicht;
+                    order.afmetingen = orderIngepakt.afmetingen;
+                    verzendenWanneerBetaaldEnIngepakt(order);
+                    break;
+                }
+            }
+
             return true;
         }
 
         private static bool Handle(OrderBetaald orderBetaald)
         {
-            Console.WriteLine("Order Betaald, ID: " + orderBetaald.orderId);
+            foreach (OrderStatus order in orders)
+            {
+                if (order.id.Equals(orderBetaald.orderId))
+                {
+                    order.betaald = true;
+                    verzendenWanneerBetaaldEnIngepakt(order);
+                    break;
+                }
+            }
+
             return true;
+        }
+
+        private static void verzendenWanneerBetaaldEnIngepakt(OrderStatus order) 
+        {
+            if (order.betaald && order.ingepakt)
+            {
+                var orderVerzonden = new OrderVerzonden()
+                {
+                    routingKey = "Order.Verzonden",
+                    orderId = order.id,
+                    ontvanger = order.klant,
+                    afzender = new Persoonsgegevens()
+                    {
+                        naam = "Postorder Company",
+                        emailadres = "info@postorder-company.com",
+                        adres = new Adres()
+                        {
+                            straat = "Singel",
+                            huisnummer = "1a",
+                            postcode = "1234AB",
+                            plaats = "Amsterdam",
+                            land = "Nederland"
+                        }
+                    },
+                    gewicht = order.gewicht,
+                    afmetingen = order.afmetingen
+                };
+
+                new RabbitMQEventPublisher().PublishEvent(orderVerzonden);
+            }
         }
 
     }

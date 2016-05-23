@@ -51,8 +51,6 @@ namespace PostorderCompany.Pakket
 
             new RabbitMQEventPublisher().PublishEvent(pakketOntvangen);
 
-            Console.WriteLine("Pakket Gereed, ID: " + pakketOntvangen.pakketId);
-      
             return true; 
         }
 

@@ -32,7 +32,7 @@ namespace PostorderCompany.Order.UI
 
         private string GetNewOrderId()
         {
-            return Guid.NewGuid().ToString("D");
+            return DateTime.Now.ToString("ORDERyyyyMMddhhMMssffffff");
         }
 
     }

@@ -54,6 +54,7 @@ namespace PostorderCompany.Tracking
                     handled = Handle(pakketAfgeleverd);
                     break;
             }
+            Console.WriteLine("\n");
             return handled;
         }
 
