@@ -1,35 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using Dapper;
+using Newtonsoft.Json;
 using PostorderCompany.Core.Events;
 using PostorderCompany.Core.Infrastructure;
 using PostorderCompany.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace PostorderCompany.Order
 {
     class Program
     {
-        class OrderStatus
-        {
-            public string id;
-            public Persoonsgegevens klant;
-            public bool betaald;
-            public bool ingepakt;
-            public string gewicht;
-            public string afmetingen;
-        }
-
-        static List<OrderStatus> orders;
-
         static void Main(string[] args)
         {
             var eventHandler = new RabbitMQEventHandler("PostorderCompany.Order", HandleEvent);
             eventHandler.Start();
-
-            orders = new List<OrderStatus>();
 
             Console.WriteLine("*** Order Service ***\n");
             Console.ReadKey(true);
@@ -61,58 +49,97 @@ namespace PostorderCompany.Order
 
         private static bool Handle(OrderOntvangen orderOntvangen)
         {
-            orders.Add(new OrderStatus()
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["PostorderCompany"].ConnectionString))
             {
-                id = orderOntvangen.orderId,
-                klant = orderOntvangen.klant,
-                betaald = false,
-                ingepakt = false
-            });
-
+                string commandText = @"
+                    INSERT INTO [dbo].[OrderStatus] ([orderId],[klant_naam],[klant_emailadres],
+                        [klant_adres_straat],[klant_adres_huisnummer],[klant_adres_postcode],[klant_adres_plaats],[klant_adres_land],
+                        [betaald],[ingepakt],[gewicht],[afmetingen])
+                    VALUES (@orderId, @klantNaam,  @klantEmailadres,
+                        @klantAdresStraat, @klantAdresHuisnummer, @klantAdresPostcode, @klantAdresPlaats, @klantAdresLand,
+                        @betaald, @ingepakt, @gewicht, @afmetingen)";
+                CommandDefinition cmd = new CommandDefinition(commandText, new OrderStatus() 
+                {
+                    orderId = orderOntvangen.orderId,
+                    klantNaam = orderOntvangen.klant.naam,
+                    klantEmailadres = orderOntvangen.klant.emailadres,
+                    klantAdresStraat = orderOntvangen.klant.adres.straat,
+                    klantAdresHuisnummer = orderOntvangen.klant.adres.huisnummer,
+                    klantAdresPostcode = orderOntvangen.klant.adres.postcode,
+                    klantAdresPlaats = orderOntvangen.klant.adres.plaats,
+                    klantAdresLand = orderOntvangen.klant.adres.land
+                });
+                connection.Execute(cmd);
+            }
             return true;
         }
 
         private static bool Handle(OrderIngepakt orderIngepakt)
         {
-            foreach (OrderStatus order in orders)
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["PostorderCompany"].ConnectionString))
             {
-                if (order.id.Equals(orderIngepakt.orderId))
-                {
-                    order.ingepakt = true;
-                    order.gewicht = orderIngepakt.gewicht;
-                    order.afmetingen = orderIngepakt.afmetingen;
-                    verzendenWanneerBetaaldEnIngepakt(order);
-                    break;
-                }
+                string commandText = @"
+                    UPDATE [dbo].[OrderStatus] 
+                    Set [ingepakt] = 1, 
+                        [gewicht] = @gewicht,
+                        [afmetingen] = @afmetingen
+                    WHERE [orderId] = @orderId";
+                CommandDefinition cmd = new CommandDefinition(commandText, orderIngepakt);
+                connection.Execute(cmd);
             }
-
+            verzendOrderWanneerBetaaldEnIngepakt(orderIngepakt.orderId);
             return true;
         }
 
         private static bool Handle(OrderBetaald orderBetaald)
         {
-            foreach (OrderStatus order in orders)
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["PostorderCompany"].ConnectionString))
             {
-                if (order.id.Equals(orderBetaald.orderId))
-                {
-                    order.betaald = true;
-                    verzendenWanneerBetaaldEnIngepakt(order);
-                    break;
-                }
+                string commandText = @"
+                    UPDATE [dbo].[OrderStatus] 
+                    Set [betaald] = 1
+                    WHERE [orderId] = @orderId";
+                CommandDefinition cmd = new CommandDefinition(commandText, orderBetaald);
+                connection.Execute(cmd);
             }
-
+            verzendOrderWanneerBetaaldEnIngepakt(orderBetaald.orderId);
             return true;
         }
 
-        private static void verzendenWanneerBetaaldEnIngepakt(OrderStatus order) 
+        private static void verzendOrderWanneerBetaaldEnIngepakt(string orderId) 
         {
+            OrderStatus order = null;
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["PostorderCompany"].ConnectionString))
+            {
+                string commandText = @"
+                    SELECT [orderId],[klant_naam],[klant_emailadres],
+                        [klant_adres_straat],[klant_adres_huisnummer],[klant_adres_postcode],[klant_adres_plaats],[klant_adres_land],
+                        [betaald],[ingepakt],[gewicht],[afmetingen] 
+                    FROM [dbo].[OrderStatus]
+                    WHERE [orderId] = @orderId";
+                CommandDefinition cmd = new CommandDefinition(commandText, new { orderId = orderId });
+                order = connection.Query<OrderStatus>(cmd).Single();
+            }
+
             if (order.betaald && order.ingepakt)
             {
                 var orderVerzonden = new OrderVerzonden()
                 {
                     routingKey = "Order.Verzonden",
-                    orderId = order.id,
-                    ontvanger = order.klant,
+                    orderId = order.orderId,
+                    ontvanger = new Persoonsgegevens()
+                    {
+                        naam = order.klantNaam,
+                        emailadres = order.klantEmailadres,
+                        adres = new Adres()
+                        {
+                            straat = order.klantAdresStraat,
+                            huisnummer = order.klantAdresHuisnummer,
+                            postcode = order.klantAdresPostcode,
+                            plaats = order.klantAdresPlaats,
+                            land = order.klantAdresLand
+                        }
+                    },
                     afzender = new Persoonsgegevens()
                     {
                         naam = "Postorder Company",
@@ -132,6 +159,23 @@ namespace PostorderCompany.Order
 
                 new RabbitMQEventPublisher().PublishEvent(orderVerzonden);
             }
+
+        }
+
+        private class OrderStatus
+        {
+            public string orderId { get; set; }
+            public string klantNaam { get; set; }
+            public string klantEmailadres { get; set; }
+            public string klantAdresStraat { get; set; }
+            public string klantAdresHuisnummer { get; set; }
+            public string klantAdresPostcode { get; set; }
+            public string klantAdresPlaats { get; set; }
+            public string klantAdresLand { get; set; }
+            public bool betaald { get; set; }
+            public bool ingepakt { get; set; }
+            public string gewicht { get; set; }
+            public string afmetingen { get; set; }
         }
 
     }

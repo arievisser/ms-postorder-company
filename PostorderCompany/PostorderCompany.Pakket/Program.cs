@@ -41,7 +41,7 @@ namespace PostorderCompany.Pakket
             var pakketOntvangen = new PakketGereed()
             {
                 routingKey = "Pakket.Gereed",
-                pakketId = Guid.NewGuid().ToString("D"),
+                pakketId = GenerateNewPakketId(),
                 orderId = orderVerzonden.orderId,
                 afzender = orderVerzonden.afzender,
                 ontvanger = orderVerzonden.ontvanger,
@@ -52,6 +52,11 @@ namespace PostorderCompany.Pakket
             new RabbitMQEventPublisher().PublishEvent(pakketOntvangen);
 
             return true; 
+        }
+
+        private static string GenerateNewPakketId()
+        {
+            return Guid.NewGuid().ToString("D");
         }
 
     }

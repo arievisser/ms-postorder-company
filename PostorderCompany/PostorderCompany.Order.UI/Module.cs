@@ -16,23 +16,25 @@ namespace PostorderCompany.Order.UI
             {
                 var order = this.Bind<Core.Models.Order>();
 
+                var orderId = GenerateNewOrderId();
+
                 var orderOntvangen = new OrderOntvangen()
                 {
                     routingKey = "Order.Ontvangen",
-                    orderId = GetNewOrderId(),
+                    orderId = orderId,
                     klant = order.klant,
                     items = order.items
                 };
 
                 new RabbitMQEventPublisher().PublishEvent(orderOntvangen);
 
-                return HttpStatusCode.OK;
+                return Response.AsJson(new { orderId = orderId });
             };
         }
 
-        private string GetNewOrderId()
+        private string GenerateNewOrderId()
         {
-            return DateTime.Now.ToString("ORDERyyyyMMddhhMMssffffff");
+            return Guid.NewGuid().ToString().GetHashCode().ToString("X");
         }
 
     }
