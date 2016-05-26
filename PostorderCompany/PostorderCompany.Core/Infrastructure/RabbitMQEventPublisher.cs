@@ -15,7 +15,7 @@ namespace PostorderCompany.Core.Infrastructure
         {
 
             var factory = new ConnectionFactory() {
-                HostName = "192.168.1.5",
+                HostName = "192.168.1.5", //192.168.1.5
                 UserName = "postordercompany",
                 Password = "postordercompany"
             };

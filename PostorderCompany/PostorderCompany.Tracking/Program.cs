@@ -54,34 +54,35 @@ namespace PostorderCompany.Tracking
                     handled = Handle(pakketAfgeleverd);
                     break;
             }
+            Console.WriteLine("\n");
             return handled;
         }
 
         private static bool Handle(OrderOntvangen orderOntvangen)
         {
-            Console.WriteLine("Order Ontvangen: {0}\nKlant:\n   {1}\n   {2} {3}\n   {4} {5}\n   {6}\n   {7}", 
+            Console.WriteLine("Order Ontvangen: {0}\n   Klant:\n     {1}\n     {2} {3}\n     {4} {5}\n     {6}\n     {7}", 
                 orderOntvangen.orderId, orderOntvangen.klant.naam, 
                 orderOntvangen.klant.adres.straat, orderOntvangen.klant.adres.huisnummer, 
                 orderOntvangen.klant.adres.postcode, orderOntvangen.klant.adres.plaats,
                 orderOntvangen.klant.adres.land, orderOntvangen.klant.emailadres);
-            Console.WriteLine("Order Items:");
+            Console.WriteLine("   Order Items:");
 
             foreach (OrderItem item in orderOntvangen.items)
             {
-                Console.WriteLine("   {0}x {1}", item.aantal, item.artikelId);
+                Console.WriteLine("     {0}x {1}", item.aantal, item.artikelId);
             }
             return true;
         }
 
         private static bool Handle(OrderIngepakt orderIngepakt)
         {
-            Console.WriteLine("Order Ingepakt: {0}\nGewicht: {1}\nAfmetingen: {2}", orderIngepakt.orderId, orderIngepakt.gewicht, orderIngepakt.afmetingen);
+            Console.WriteLine("Order Ingepakt: {0}\n   Gewicht: {1}\n   Afmetingen: {2}", orderIngepakt.orderId, orderIngepakt.gewicht, orderIngepakt.afmetingen);
             return true;
         }
 
         private static bool Handle(OrderBetaald orderBetaald)
         {
-            Console.WriteLine("Order Betaald: {0}\nBetaalmethode: {1}", orderBetaald.orderId, orderBetaald.betaalmethode);
+            Console.WriteLine("Order Betaald: {0}\n   Betaalmethode: {1}", orderBetaald.orderId, orderBetaald.betaalmethode);
             return true;
         }
 
@@ -93,15 +94,15 @@ namespace PostorderCompany.Tracking
 
         private static bool Handle(PakketGereed pakketGereed)
         {
-            Console.WriteLine("Pakket Gereed\nAfzender:\n"
+            Console.WriteLine("Pakket Gereed\n   Afzender:\n"
                                 + "     {0}\n" 
                                 + "     {1} {2}, {3} {4}, {5}\n"
                                 + "     Order-ID: {6}\n"
-                                + "Ontvanger:\n"
+                                + "   Ontvanger:\n"
                                 + "     {7}\n"
                                 + "     {8} {9}, {10} {11}, {12}\n"
-                                + "Eigenschappen: {13}, {14}\n"
-                                + "Vanaf nu te volgen onder pakket-ID: {15}\n", 
+                                + "   Eigenschappen: {13}, {14}\n"
+                                + "   Vanaf nu te volgen onder pakket-ID: {15}\n", 
                 pakketGereed.afzender.naam,
                 pakketGereed.afzender.adres.straat, pakketGereed.afzender.adres.huisnummer, pakketGereed.afzender.adres.postcode, pakketGereed.afzender.adres.plaats, pakketGereed.afzender.adres.land,
                 pakketGereed.orderId,
@@ -114,13 +115,13 @@ namespace PostorderCompany.Tracking
 
         private static bool Handle(PakketOnderweg pakketOnderweg)
         {
-            Console.WriteLine("Pakket Onderweg: {0}\nChauffeur: {1}", pakketOnderweg.pakketId, pakketOnderweg.chauffeur);
+            Console.WriteLine("Pakket Onderweg: {0}\n   Chauffeur: {1}", pakketOnderweg.pakketId, pakketOnderweg.chauffeur);
             return true;
         }
 
         private static bool Handle(PakketAfgeleverd pakketAfgeleverd)
         {
-            Console.WriteLine("Pakket Afgeleverd: {0}\nHandtekening: {1}", pakketAfgeleverd.pakketId, pakketAfgeleverd.handtekening);
+            Console.WriteLine("Pakket Afgeleverd: {0}\n   Handtekening: {1}", pakketAfgeleverd.pakketId, pakketAfgeleverd.handtekening);
             return true;
         }
 

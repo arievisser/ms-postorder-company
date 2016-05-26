@@ -9,7 +9,7 @@ namespace PostorderCompany.Core.Events
 {
     public class OrderBetaald : BaseEvent
     {
-        public string orderId;
-        public string betaalmethode;
+        public string orderId { get; set; }
+        public string betaalmethode { get; set; }
     }
 }

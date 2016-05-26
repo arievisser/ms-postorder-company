@@ -8,7 +8,7 @@ namespace PostorderCompany.Core.Infrastructure
 {
     public class RabbitMQEventHandler
     {
-        private const string DEFAULT_HOST = "192.168.1.5";
+        private const string DEFAULT_HOST = "192.168.1.5"; //192.168.1.5
         private const string DEFAULT_USERNAME = "postordercompany";
         private const string DEFAULT_PASSWORD = "postordercompany";
 

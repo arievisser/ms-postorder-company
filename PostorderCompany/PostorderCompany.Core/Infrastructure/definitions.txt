@@ -32,14 +32,17 @@ Order.Verzonden
 - PostorderCompany.Chauffeur: 
 Pakket.Gereed
 
-- PostorderCompany.Order: 
+- PostorderCompany.Order:
+Order.Ontvangen 
 Order.Ingepakt 
 Order.Betaald
 
 - PostorderCompany.Magazijn: 
 Order.Ontvangen
+Order.Ingepakt
 
 - PostorderCompany.Factuur: 
 Order.Ontvangen
+Order.Betaald
 
 
