@@ -41,9 +41,9 @@ namespace PostorderCompany.Tracking
                     handled = Handle(orderVerzonden);
                     break;
 
-                case "PakketOntvangen":
-                    PakketGereed pakketOntvangen = JsonConvert.DeserializeObject<PakketGereed>(eventData);
-                    handled = Handle(pakketOntvangen);
+                case "PakketGereed":
+                    PakketGereed pakketGereed = JsonConvert.DeserializeObject<PakketGereed>(eventData);
+                    handled = Handle(pakketGereed);
                     break;
                 case "PakketOnderweg":
                     PakketOnderweg pakketOnderweg = JsonConvert.DeserializeObject<PakketOnderweg>(eventData);
