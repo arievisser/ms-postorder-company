@@ -14,27 +14,6 @@ namespace PostorderCompany.Magazijn
         public MagazijnService() {
             var eventHandler = new RabbitMQEventHandler("PostorderCompany.Magazijn", HandleEvent);
             eventHandler.Start();
-
-            orders.Add(new OrderIngepakt() {
-                afmetingen =  null,
-                gewicht = null,
-                orderId = "123456",
-                routingKey = "15"
-            });
-
-            orders.Add(new OrderIngepakt() {
-                afmetingen = null,
-                gewicht = null,
-                orderId = "654321",
-                routingKey = "15"
-            });
-
-            orders.Add(new OrderIngepakt() {
-                afmetingen = null,
-                gewicht = null,
-                orderId = "555555",
-                routingKey = "15"
-            });
         }
 
         public void sendOrder(OrderIngepakt order) {
