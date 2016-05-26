@@ -39,10 +39,8 @@ Order.Betaald
 
 - PostorderCompany.Magazijn: 
 Order.Ontvangen
-Order.Ingepakt
 
 - PostorderCompany.Factuur: 
 Order.Ontvangen
-Order.Betaald
 
 
