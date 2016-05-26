@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,10 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+=======
+﻿using System.Collections.Generic;
+>>>>>>> origin/master
 using Newtonsoft.Json;
 using PostorderCompany.Core.Events;
 using PostorderCompany.Core.Infrastructure;
-using PostorderCompany.Magazijn.Model;
 
 namespace PostorderCompany.Magazijn
 {
@@ -23,27 +26,6 @@ namespace PostorderCompany.Magazijn
         public MagazijnService() {
             var eventHandler = new RabbitMQEventHandler("PostorderCompany.Magazijn", HandleEvent);
             eventHandler.Start();
-
-            orders.Add(new OrderIngepakt() {
-                afmetingen =  null,
-                gewicht = null,
-                orderId = "123456",
-                routingKey = "15"
-            });
-
-            orders.Add(new OrderIngepakt() {
-                afmetingen = null,
-                gewicht = null,
-                orderId = "654321",
-                routingKey = "15"
-            });
-
-            orders.Add(new OrderIngepakt() {
-                afmetingen = null,
-                gewicht = null,
-                orderId = "555555",
-                routingKey = "15"
-            });
         }
 
         public void sendOrder(OrderIngepakt order) {
