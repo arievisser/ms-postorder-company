@@ -9,8 +9,8 @@ namespace PostorderCompany.Core.Events
 {
     public class OrderIngepakt : BaseEvent
     {
-        public string orderId;
-        public string gewicht;
-        public string afmetingen;
+        public string orderId { get; set; }
+        public string gewicht { get; set; }
+        public string afmetingen { get; set; }
     }
 }
