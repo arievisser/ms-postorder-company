@@ -55,6 +55,7 @@
     <Compile Include="Events\PakketAfgeleverd.cs" />
     <Compile Include="Events\PakketOnderweg.cs" />
     <Compile Include="Infrastructure\RabbitMQEventHandler.cs" />
+    <Compile Include="Models\Factuur.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderItem.cs" />
     <Compile Include="Models\Pakket.cs" />
