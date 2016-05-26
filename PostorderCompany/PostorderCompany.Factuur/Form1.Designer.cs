@@ -65,7 +65,7 @@
             "Creditcard",
             "Contant",
             "Paypal",
-            "Bit-coints",
+            "Bit-coins",
             "AfterPay",
             "Pokemon-kaarten",
             "Knikkers",
@@ -110,8 +110,8 @@
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Verzenden);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Factuur";
+            this.Text = "Factuur";
             ((System.ComponentModel.ISupportInitialize)(this.factuurBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
