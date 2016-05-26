@@ -4,11 +4,9 @@ using PostorderCompany.Core.Events;
 using PostorderCompany.Core.Infrastructure;
 using PostorderCompany.Core.Models;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace PostorderCompany.Order
 {
@@ -52,22 +50,12 @@ namespace PostorderCompany.Order
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["PostorderCompany"].ConnectionString))
             {
                 string commandText = @"
-                    INSERT INTO [dbo].[OrderStatus] ([orderId],[klant_naam],[klant_emailadres],
-                        [klant_adres_straat],[klant_adres_huisnummer],[klant_adres_postcode],[klant_adres_plaats],[klant_adres_land],
-                        [betaald],[ingepakt],[gewicht],[afmetingen])
-                    VALUES (@orderId, @klantNaam,  @klantEmailadres,
-                        @klantAdresStraat, @klantAdresHuisnummer, @klantAdresPostcode, @klantAdresPlaats, @klantAdresLand,
-                        @betaald, @ingepakt, @gewicht, @afmetingen)";
+                    INSERT INTO [dbo].[OrderStatus] ([orderId],[klant],[betaald],[ingepakt],[gewicht],[afmetingen])
+                    VALUES (@orderId, @klant, @betaald, @ingepakt, @gewicht, @afmetingen)";
                 CommandDefinition cmd = new CommandDefinition(commandText, new OrderStatus() 
                 {
                     orderId = orderOntvangen.orderId,
-                    klantNaam = orderOntvangen.klant.naam,
-                    klantEmailadres = orderOntvangen.klant.emailadres,
-                    klantAdresStraat = orderOntvangen.klant.adres.straat,
-                    klantAdresHuisnummer = orderOntvangen.klant.adres.huisnummer,
-                    klantAdresPostcode = orderOntvangen.klant.adres.postcode,
-                    klantAdresPlaats = orderOntvangen.klant.adres.plaats,
-                    klantAdresLand = orderOntvangen.klant.adres.land
+                    klant = JsonConvert.SerializeObject(orderOntvangen.klant)
                 });
                 connection.Execute(cmd);
             }
@@ -112,9 +100,7 @@ namespace PostorderCompany.Order
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["PostorderCompany"].ConnectionString))
             {
                 string commandText = @"
-                    SELECT [orderId],[klant_naam],[klant_emailadres],
-                        [klant_adres_straat],[klant_adres_huisnummer],[klant_adres_postcode],[klant_adres_plaats],[klant_adres_land],
-                        [betaald],[ingepakt],[gewicht],[afmetingen] 
+                    SELECT [orderId],[klant],[betaald],[ingepakt],[gewicht],[afmetingen] 
                     FROM [dbo].[OrderStatus]
                     WHERE [orderId] = @orderId";
                 CommandDefinition cmd = new CommandDefinition(commandText, new { orderId = orderId });
@@ -127,19 +113,7 @@ namespace PostorderCompany.Order
                 {
                     routingKey = "Order.Verzonden",
                     orderId = order.orderId,
-                    ontvanger = new Persoonsgegevens()
-                    {
-                        naam = order.klantNaam,
-                        emailadres = order.klantEmailadres,
-                        adres = new Adres()
-                        {
-                            straat = order.klantAdresStraat,
-                            huisnummer = order.klantAdresHuisnummer,
-                            postcode = order.klantAdresPostcode,
-                            plaats = order.klantAdresPlaats,
-                            land = order.klantAdresLand
-                        }
-                    },
+                    ontvanger = JsonConvert.DeserializeObject<Persoonsgegevens>(order.klant),
                     afzender = new Persoonsgegevens()
                     {
                         naam = "Postorder Company",
@@ -165,13 +139,7 @@ namespace PostorderCompany.Order
         private class OrderStatus
         {
             public string orderId { get; set; }
-            public string klantNaam { get; set; }
-            public string klantEmailadres { get; set; }
-            public string klantAdresStraat { get; set; }
-            public string klantAdresHuisnummer { get; set; }
-            public string klantAdresPostcode { get; set; }
-            public string klantAdresPlaats { get; set; }
-            public string klantAdresLand { get; set; }
+            public string klant { get; set; }
             public bool betaald { get; set; }
             public bool ingepakt { get; set; }
             public string gewicht { get; set; }
