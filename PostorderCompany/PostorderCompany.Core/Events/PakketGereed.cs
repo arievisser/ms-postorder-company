@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PostorderCompany.Core.Events
 {
-    public class PakketOntvangen : BaseEvent
+    public class PakketGereed : BaseEvent
     {
         public string pakketId;
         public string orderId;

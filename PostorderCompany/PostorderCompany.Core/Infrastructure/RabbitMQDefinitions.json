@@ -34,6 +34,46 @@
       "auto_delete": false,
       "arguments": {
       }
+    },
+    {
+      "name": "PostorderCompany.Pakket",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+      }
+    },    
+	{
+      "name": "PostorderCompany.Chauffeur",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+      }
+    },
+	{
+      "name": "PostorderCompany.Order",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+      }
+    },
+    {
+      "name": "PostorderCompany.Magazijn",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+      }
+    },    
+	{
+      "name": "PostorderCompany.Factuur",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+      }
     }
   ],
   "exchanges": [
@@ -55,6 +95,87 @@
       "destination": "PostorderCompany.Tracking",
       "destination_type": "queue",
       "routing_key": "Pakket.#",
+      "arguments": {
+      }
+    },
+	{
+      "source": "PostorderCompany",
+      "vhost": "/",
+      "destination": "PostorderCompany.Tracking",
+      "destination_type": "queue",
+      "routing_key": "Order.#",
+      "arguments": {
+      }
+    },
+	{
+      "source": "PostorderCompany",
+      "vhost": "/",
+      "destination": "PostorderCompany.Pakket",
+      "destination_type": "queue",
+      "routing_key": "Pakket.#",
+      "arguments": {
+      }
+    },
+	{
+      "source": "PostorderCompany",
+      "vhost": "/",
+      "destination": "PostorderCompany.Pakket",
+      "destination_type": "queue",
+      "routing_key": "Order.Verzonden",
+      "arguments": {
+      }
+    },
+	{
+      "source": "PostorderCompany",
+      "vhost": "/",
+      "destination": "PostorderCompany.Chauffeur",
+      "destination_type": "queue",
+      "routing_key": "Pakket.Gereed",
+      "arguments": {
+      }
+    },
+	{
+      "source": "PostorderCompany",
+      "vhost": "/",
+      "destination": "PostorderCompany.Order",
+      "destination_type": "queue",
+      "routing_key": "Order.Ontvangen",
+      "arguments": {
+      }
+    },
+	{
+      "source": "PostorderCompany",
+      "vhost": "/",
+      "destination": "PostorderCompany.Order",
+      "destination_type": "queue",
+      "routing_key": "Order.Ingepakt",
+      "arguments": {
+      }
+    },
+	{
+      "source": "PostorderCompany",
+      "vhost": "/",
+      "destination": "PostorderCompany.Order",
+      "destination_type": "queue",
+      "routing_key": "Order.Betaald",
+      "arguments": {
+      }
+    },
+	{
+      "source": "PostorderCompany",
+      "vhost": "/",
+      "destination": "PostorderCompany.Magazijn",
+      "destination_type": "queue",
+      "routing_key": "Order.Ontvangen",
+      "arguments": {
+      }
+    },
+	{
+      "source": "PostorderCompany",
+      "vhost": "/",
+      "destination": "PostorderCompany.Factuur",
+      "destination_type": "queue",
+      "routing_key": "Order.Ontvangen",
       "arguments": {
       }
     }
