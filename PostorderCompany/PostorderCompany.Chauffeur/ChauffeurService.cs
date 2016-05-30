@@ -6,37 +6,14 @@ using PostorderCompany.Core.Infrastructure;
 
 namespace PostorderCompany.Chauffeur
 {
-    class ChauffeurService
+    class ChauffeurService : IChauffeurService
     {
         private RabbitMQEventHandler _eventHandler;
-        private static List<PakketStatus> _pakketjes;
+        private static List<PakketStatus> _pakketjes = new List<PakketStatus>();
 
         public ChauffeurService()
         {
             StartListening();
-            _pakketjes = new List<PakketStatus>();
-
-
-            _pakketjes.Add(new PakketStatus()
-            {
-                pakketId = "abc",
-                afgeleverd = false,
-                onderweg = false,
-            });
-
-            _pakketjes.Add(new PakketStatus()
-            {
-                pakketId = "asdas",
-                afgeleverd = false,
-                onderweg = false,
-            });
-
-            _pakketjes.Add(new PakketStatus()
-            {
-                pakketId = "ergerre",
-                afgeleverd = false,
-                onderweg = false,
-            });
         }
 
         public List<PakketStatus> GetStatuses()
@@ -57,7 +34,7 @@ namespace PostorderCompany.Chauffeur
             new RabbitMQEventPublisher().PublishEvent(orderOnderweg);
         }
 
-        public void OrderDeleverd(PakketStatus status, string handtekening)
+        public void OrderDelivered(PakketStatus status, string handtekening)
         {
             if (!status.onderweg)
                 return;
@@ -80,12 +57,7 @@ namespace PostorderCompany.Chauffeur
             Console.WriteLine("*** Tracking Service ***\n");
         }
 
-        public void StopListening()
-        {
-            _eventHandler?.Stop();
-        }
-
-        private static bool HandleEvent(string eventType, string eventData)
+        public bool HandleEvent(string eventType, string eventData)
         {
             switch (eventType)
             {
@@ -97,27 +69,10 @@ namespace PostorderCompany.Chauffeur
             }
         }
 
-        private static bool Handle(PakketGereed pakketGereed)
+        private bool Handle(PakketGereed pakketGereed)
         {
             if (pakketGereed == null)
                 return false;
-
-            Console.WriteLine("Pakket ontvangen van afzender:\n"
-                                + "     {0}\n"
-                                + "     {1} {2}, {3} {4}, {5}\n"
-                                + "     Order-ID: {6}\n"
-                                + "voor ontvanger:\n"
-                                + "     {7}\n"
-                                + "     {8} {9}, {10} {11}, {12}\n"
-                                + "{13}, {14}\n"
-                                + "Vanaf nu te volgen onder pakket-ID: {15}\n",
-                pakketGereed.afzender.naam,
-                pakketGereed.afzender.adres.straat, pakketGereed.afzender.adres.huisnummer, pakketGereed.afzender.adres.postcode, pakketGereed.afzender.adres.plaats, pakketGereed.afzender.adres.land,
-                pakketGereed.orderId,
-                pakketGereed.ontvanger.naam,
-                pakketGereed.ontvanger.adres.straat, pakketGereed.ontvanger.adres.huisnummer, pakketGereed.ontvanger.adres.postcode, pakketGereed.ontvanger.adres.plaats, pakketGereed.ontvanger.adres.land,
-                pakketGereed.gewicht, pakketGereed.afmetingen,
-                pakketGereed.pakketId);
 
             _pakketjes.Add(new PakketStatus()
             {

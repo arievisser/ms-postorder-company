@@ -2,30 +2,29 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using PostorderCompany.Core.Events;
 using PostorderCompany.Core.Infrastructure;
+using PostorderCompany.Magazijn;
 
-public class MagazijnService
+public class MagazijnService : IMagazijnService
 {
+    private static List<OrderIngepakt> orders = new List<OrderIngepakt>();
 
-    public static List<OrderIngepakt> orders = new List<OrderIngepakt>();
-
-
-    public MagazijnService()
-    {
+    public MagazijnService() {
         var eventHandler = new RabbitMQEventHandler("PostorderCompany.Magazijn", HandleEvent);
         eventHandler.Start();
     }
 
-    public void sendOrder(OrderIngepakt order)
-    {
+    public void sendOrder(OrderIngepakt order) {
         new RabbitMQEventPublisher().PublishEvent(order);
         orders.Remove(order);
     }
 
-    private static bool HandleEvent(string eventType, string eventData)
-    {
+    public List<OrderIngepakt> GetOrders() {
+        return orders;
+    }
+
+    public bool HandleEvent(string eventType, string eventData) {
         bool handled = true;
-        switch (eventType)
-        {
+        switch (eventType) {
             case "OrderOntvangen":
                 OrderOntvangen orderOntvangen = JsonConvert.DeserializeObject<OrderOntvangen>(eventData);
                 handled = Handle(orderOntvangen);
@@ -34,11 +33,9 @@ public class MagazijnService
         return handled;
     }
 
-    private static bool Handle(OrderOntvangen orderOntvangen)
-    {
+    private bool Handle(OrderOntvangen orderOntvangen) {
 
-        var order = new OrderIngepakt()
-        {
+        var order = new OrderIngepakt() {
             routingKey = "Order.Ingepakt",
             orderId = orderOntvangen.orderId,
             afmetingen = null,
@@ -48,11 +45,6 @@ public class MagazijnService
         orders.Add(order);
 
         return true;
-    }
-
-    public List<OrderIngepakt> GetOrders()
-    {
-        return orders;
     }
 }
 

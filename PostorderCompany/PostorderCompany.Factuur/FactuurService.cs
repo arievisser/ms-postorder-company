@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using PostorderCompany.Core.Events;
 using PostorderCompany.Core.Infrastructure;
 
 namespace PostorderCompany.Factuur
 {
-    public class FactuurService
-    {
+    public class FactuurService : IFactuurService {
         private List<Core.Models.Factuur> facturen = new List<Core.Models.Factuur>();
 
         public FactuurService()
@@ -17,38 +14,6 @@ namespace PostorderCompany.Factuur
             eventHandler.Start();
         }
 
-        public bool HandleEvent(string eventType, string eventData)
-        {
-            bool handled = true;
-            switch (eventType)
-            {
-                case "OrderOntvangen":
-                    OrderOntvangen pakketOntvangen = JsonConvert.DeserializeObject<OrderOntvangen>(eventData);
-                    handled = Handle(pakketOntvangen);
-                    break;
-            }
-
-            return handled;
-        }
-
-        private bool Handle(OrderOntvangen pakketOntvangen)
-        {
-            // logica
-            var factuur = new Core.Models.Factuur
-            {
-                orderId = pakketOntvangen.orderId
-            };
-            this.facturen.Add(factuur);
-           
-            Console.Out.WriteLine(facturen);
-
-            return true;
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="factuur"></param>
         public void SendMessage(Core.Models.Factuur factuur)
         {
             var orderBetaald = new OrderBetaald
@@ -65,9 +30,31 @@ namespace PostorderCompany.Factuur
             return facturen;
         }
 
-        public void RemoreFactuur(Core.Models.Factuur factuur)
+        public void Remove(Core.Models.Factuur factuur)
         {
             facturen.Remove(factuur);
+        }
+
+        public bool HandleEvent(string eventType, string eventData) {
+            bool handled = true;
+            switch (eventType) {
+                case "OrderOntvangen":
+                    OrderOntvangen pakketOntvangen = JsonConvert.DeserializeObject<OrderOntvangen>(eventData);
+                    handled = Handle(pakketOntvangen);
+                    break;
+            }
+
+            return handled;
+        }
+
+        private bool Handle(OrderOntvangen pakketOntvangen) {
+            // logica
+            var factuur = new Core.Models.Factuur {
+                orderId = pakketOntvangen.orderId
+            };
+            this.facturen.Add(factuur);
+
+            return true;
         }
     }
 }

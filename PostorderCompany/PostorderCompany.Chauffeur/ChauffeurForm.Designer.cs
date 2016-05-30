@@ -105,7 +105,7 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "Handtekening";
             // 
-            // ChauffeurOverView
+            // ChauffeurForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -118,9 +118,8 @@
             this.Controls.Add(this.Delivered_btn);
             this.Controls.Add(this.Send_btn);
             this.MinimumSize = new System.Drawing.Size(450, 308);
-            this.Name = "ChauffeurOverView";
-            this.Text = "ChauffeurOverView";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChauffeurOverView_FormClosing);
+            this.Name = "ChauffeurForm";
+            this.Text = "Chauffeur";
             this.ResumeLayout(false);
             this.PerformLayout();
 

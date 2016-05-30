@@ -133,7 +133,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.listBox1);
             this.Name = "MagazijnForm";
-            this.Text = "MagazijnForm";
+            this.Text = "Magazijn";
             this.Click += new System.EventHandler(this.updateListbox);
             this.DoubleClick += new System.EventHandler(this.updateListbox);
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();

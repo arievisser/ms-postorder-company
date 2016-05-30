@@ -12,9 +12,9 @@ namespace PostorderCompany.Magazijn
 {
     public partial class MagazijnForm : Form
     {
-        private MagazijnService _magazijnService;
+        private IMagazijnService _magazijnService;
 
-        public MagazijnForm(MagazijnService magazijnService) {
+        public MagazijnForm(IMagazijnService magazijnService) {
             InitializeComponent();
             _magazijnService = magazijnService;
         }

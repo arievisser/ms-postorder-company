@@ -64,6 +64,7 @@
       <DependentUpon>ChauffeurForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ChauffeurService.cs" />
+    <Compile Include="IChauffeurService.cs" />
     <Compile Include="PakketStatus.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

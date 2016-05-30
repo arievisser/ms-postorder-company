@@ -7,7 +7,8 @@ namespace PostorderCompany.Magazijn
     public class Program
     {
         private static void Main(string[] args) {
-            Application.Run(new MagazijnForm(new MagazijnService()));
+            IMagazijnService magazijnService = new MagazijnService();
+            Application.Run(new MagazijnForm(magazijnService));
         }
     }
 }

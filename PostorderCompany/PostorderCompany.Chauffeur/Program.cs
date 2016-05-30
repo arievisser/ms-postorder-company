@@ -6,7 +6,8 @@ namespace PostorderCompany.Chauffeur
     {
         public static void Main(string[] args)
         {
-            Application.Run(new ChauffeurForm());
+            IChauffeurService chauffeurService = new ChauffeurService();
+            Application.Run(new ChauffeurForm(chauffeurService));
         }
     }
 }

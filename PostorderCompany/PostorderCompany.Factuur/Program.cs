@@ -6,8 +6,8 @@ namespace PostorderCompany.Factuur
     {
         static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.Run(new Form1(new FactuurService()));
+            IFactuurService factuurService = new FactuurService();
+            Application.Run(new FactuurForm(factuurService));
         }
 
     }

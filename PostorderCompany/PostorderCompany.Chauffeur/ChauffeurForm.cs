@@ -5,17 +5,17 @@ namespace PostorderCompany.Chauffeur
 {
     public partial class ChauffeurForm : Form
     {
-        private ChauffeurService _chauffeurService;
+        private IChauffeurService _chauffeurService;
 
-        public ChauffeurForm()
+        public ChauffeurForm(IChauffeurService chauffeurService)
         {
+            _chauffeurService = chauffeurService;
             InitializeComponent();
 
-            _chauffeurService = new ChauffeurService();
-            RefresList();
+            RefreshList();
         }
 
-        private void RefresList()
+        private void RefreshList()
         {
             OverView.DataSource = null;
             OverView.DataSource = _chauffeurService.GetStatuses();
@@ -29,7 +29,7 @@ namespace PostorderCompany.Chauffeur
             if (selectedStatus != null && !string.IsNullOrEmpty(chauffeur) && !selectedStatus.onderweg)
                 _chauffeurService.SendOrder(selectedStatus, chauffeur);
 
-            RefresList();
+            RefreshList();
         }
 
         private void Delivered_btn_Click(object sender, EventArgs e)
@@ -38,16 +38,11 @@ namespace PostorderCompany.Chauffeur
             var handtekening = handetekening_txt.Text;
             if (selectedStatus != null && !string.IsNullOrEmpty(handtekening))
             {
-                _chauffeurService.OrderDeleverd(selectedStatus, handtekening);
+                _chauffeurService.OrderDelivered(selectedStatus, handtekening);
                 handetekening_txt.Text = "";
             }
 
-            RefresList();
-        }
-
-        private void ChauffeurOverView_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            _chauffeurService.StopListening();
+            RefreshList();
         }
 
         private void OverView_SelectedIndexChanged(object sender, EventArgs e)
@@ -68,7 +63,7 @@ namespace PostorderCompany.Chauffeur
                 Send_btn.Enabled = true;
             }
 
-            RefresList();
+            RefreshList();
         }
     }
 }
