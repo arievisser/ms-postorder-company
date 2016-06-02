@@ -22,6 +22,11 @@ namespace PostorderCompany.Chauffeur
             OverView.DisplayMember = "pakketId";
         }
 
+        private void refreshList_btn_Click(object sender, EventArgs e)
+        {
+            RefreshList();
+        }
+
         private void Send_btn_Click(object sender, EventArgs e)
         {
             var selectedStatus = (PakketStatus)OverView.SelectedItem;
@@ -53,17 +58,14 @@ namespace PostorderCompany.Chauffeur
 
             if (selectedStatus.onderweg)
             {
-                //chauffeur_txt.ReadOnly = true;
                 chauffeur_txt.Text = "";
                 Send_btn.Enabled = false;
             }
             else if (!selectedStatus.onderweg)
             {
-                //handetekening_txt.ReadOnly = false;
                 Send_btn.Enabled = true;
             }
 
-            RefreshList();
         }
     }
 }

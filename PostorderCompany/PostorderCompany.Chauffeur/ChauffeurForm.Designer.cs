@@ -35,11 +35,12 @@
             this.chauffeur_txt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.refreshList_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Send_btn
             // 
-            this.Send_btn.Location = new System.Drawing.Point(296, 194);
+            this.Send_btn.Location = new System.Drawing.Point(299, 235);
             this.Send_btn.Name = "Send_btn";
             this.Send_btn.Size = new System.Drawing.Size(123, 23);
             this.Send_btn.TabIndex = 1;
@@ -49,7 +50,7 @@
             // 
             // Delivered_btn
             // 
-            this.Delivered_btn.Location = new System.Drawing.Point(296, 236);
+            this.Delivered_btn.Location = new System.Drawing.Point(299, 277);
             this.Delivered_btn.Name = "Delivered_btn";
             this.Delivered_btn.Size = new System.Drawing.Size(123, 23);
             this.Delivered_btn.TabIndex = 2;
@@ -64,23 +65,23 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.OverView.DisplayMember = "pakketId";
             this.OverView.FormattingEnabled = true;
-            this.OverView.Location = new System.Drawing.Point(10, 10);
+            this.OverView.Location = new System.Drawing.Point(13, 51);
             this.OverView.Name = "OverView";
-            this.OverView.Size = new System.Drawing.Size(409, 160);
+            this.OverView.Size = new System.Drawing.Size(428, 160);
             this.OverView.TabIndex = 3;
             this.OverView.ValueMember = "pakketId";
             this.OverView.SelectedIndexChanged += new System.EventHandler(this.OverView_SelectedIndexChanged);
             // 
             // handetekening_txt
             // 
-            this.handetekening_txt.Location = new System.Drawing.Point(10, 238);
+            this.handetekening_txt.Location = new System.Drawing.Point(13, 279);
             this.handetekening_txt.Name = "handetekening_txt";
             this.handetekening_txt.Size = new System.Drawing.Size(280, 20);
             this.handetekening_txt.TabIndex = 5;
             // 
             // chauffeur_txt
             // 
-            this.chauffeur_txt.Location = new System.Drawing.Point(10, 196);
+            this.chauffeur_txt.Location = new System.Drawing.Point(13, 237);
             this.chauffeur_txt.Name = "chauffeur_txt";
             this.chauffeur_txt.Size = new System.Drawing.Size(280, 20);
             this.chauffeur_txt.TabIndex = 6;
@@ -89,7 +90,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(10, 177);
+            this.label1.Location = new System.Drawing.Point(13, 218);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(109, 15);
             this.label1.TabIndex = 7;
@@ -99,17 +100,28 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 219);
+            this.label2.Location = new System.Drawing.Point(15, 260);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(96, 15);
             this.label2.TabIndex = 8;
             this.label2.Text = "Handtekening";
             // 
+            // refreshList_btn
+            // 
+            this.refreshList_btn.Location = new System.Drawing.Point(13, 13);
+            this.refreshList_btn.Name = "refreshList_btn";
+            this.refreshList_btn.Size = new System.Drawing.Size(75, 23);
+            this.refreshList_btn.TabIndex = 9;
+            this.refreshList_btn.Text = "Vernieuwen";
+            this.refreshList_btn.UseVisualStyleBackColor = true;
+            this.refreshList_btn.Click += new System.EventHandler(this.refreshList_btn_Click);
+            // 
             // ChauffeurForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 269);
+            this.ClientSize = new System.Drawing.Size(453, 321);
+            this.Controls.Add(this.refreshList_btn);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.chauffeur_txt);
@@ -133,5 +145,6 @@
         private System.Windows.Forms.TextBox chauffeur_txt;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button refreshList_btn;
     }
 }
