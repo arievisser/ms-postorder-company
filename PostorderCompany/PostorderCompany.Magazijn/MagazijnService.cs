@@ -9,8 +9,7 @@ public class MagazijnService : IMagazijnService
     private static List<OrderIngepakt> orders = new List<OrderIngepakt>();
 
     public MagazijnService() {
-        var eventHandler = new RabbitMQEventHandler("PostorderCompany.Magazijn", HandleEvent);
-        eventHandler.Start();
+        StartListener();
     }
 
     public void sendOrder(OrderIngepakt order) {
@@ -20,6 +19,11 @@ public class MagazijnService : IMagazijnService
 
     public List<OrderIngepakt> GetOrders() {
         return orders;
+    }
+
+    public void StartListener() {
+        var eventHandler = new RabbitMQEventHandler("PostorderCompany.Magazijn", HandleEvent);
+        eventHandler.Start();
     }
 
     public bool HandleEvent(string eventType, string eventData) {

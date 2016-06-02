@@ -12,5 +12,6 @@ namespace PostorderCompany.Magazijn
         bool HandleEvent(string eventType, string eventData);
         void sendOrder(OrderIngepakt order);
         List<OrderIngepakt> GetOrders();
+        void StartListener();
     }
 }

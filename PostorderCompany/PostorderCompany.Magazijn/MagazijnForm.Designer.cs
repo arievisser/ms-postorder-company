@@ -47,8 +47,6 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(243, 342);
             this.listBox1.TabIndex = 0;
-            this.listBox1.Enter += new System.EventHandler(this.updateListbox);
-            this.listBox1.Leave += new System.EventHandler(this.updateListbox);
             // 
             // textBox1
             // 
@@ -134,8 +132,6 @@
             this.Controls.Add(this.listBox1);
             this.Name = "MagazijnForm";
             this.Text = "Magazijn";
-            this.Click += new System.EventHandler(this.updateListbox);
-            this.DoubleClick += new System.EventHandler(this.updateListbox);
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource1)).EndInit();
             this.ResumeLayout(false);

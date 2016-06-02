@@ -26,10 +26,6 @@ namespace PostorderCompany.Magazijn
             listBox1.DisplayMember = "orderId";
         }
 
-        private void SelectOrder(object sender, EventArgs e) {
-
-        }
-
         private void button1_Click(object sender, EventArgs e) {
 
             if (listBox1.SelectedItem != null) {
