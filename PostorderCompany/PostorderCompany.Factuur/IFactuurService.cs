@@ -7,5 +7,6 @@ namespace PostorderCompany.Factuur {
         List<Core.Models.Factuur> GetFacturen();
         void Remove(Core.Models.Factuur factuur);
         bool HandleEvent(string eventType, string eventData);
+        void StartListening();
     }
 }
