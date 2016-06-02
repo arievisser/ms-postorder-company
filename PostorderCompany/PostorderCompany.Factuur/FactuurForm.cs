@@ -18,6 +18,10 @@ namespace PostorderCompany.Factuur
         private void VerzendFactuur(object sender, EventArgs e)
         {
             Core.Models.Factuur factuur = (Core.Models.Factuur)listBox1.SelectedItem;
+            if (factuur == null || comboBox1.SelectedItem == null)
+            {
+                return;
+            }
             factuur.betaalMethode = comboBox1.Text;
             _factuurService.SendMessage(factuur);
             _factuurService.Remove(factuur);

@@ -10,6 +10,11 @@ namespace PostorderCompany.Factuur
 
         public FactuurService()
         {
+            StartListening();
+        }
+
+        public void StartListening()
+        {
             RabbitMQEventHandler eventHandler = new RabbitMQEventHandler("PostorderCompany.Factuur", HandleEvent);
             eventHandler.Start();
         }
